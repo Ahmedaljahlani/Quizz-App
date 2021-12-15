@@ -17,8 +17,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
     Context context;
     private ArrayList<Model> models;
 
-    public MyAdapter(Context context,ArrayList<Model> models) {
-        this.context=context;
+    public MyAdapter(Context context, ArrayList<Model> models) {
+        this.context = context;
 
         this.models = models;
     }
@@ -27,7 +27,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 
-        View view= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_layout,viewGroup,false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_layout, viewGroup, false);
 
         return new MyHolder(view);
     }
@@ -42,7 +42,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyHolder> {
             @Override
             public void onItemClickListener(View v, int position) {
 
-                Intent intent=new Intent(context,models.get(i).getPath());
+                Intent intent = new Intent(context, models.get(i).getPath());
                 context.startActivity(intent);
             }
         });

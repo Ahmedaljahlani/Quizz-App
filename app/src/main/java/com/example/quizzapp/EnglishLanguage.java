@@ -21,17 +21,19 @@ public class EnglishLanguage extends AppCompatActivity {
     private Button optionBtnTrue, optionBtnFalse;
     ArrayList<QuestionModel> questionModelArrayList;
 
-    ArrayList<QuestionModel> passedQuestions,previousQuestions;
+    ArrayList<QuestionModel> passedQuestions;
+    ArrayList<QuestionModel> previousQuestions;
     Random random;
-    int currentScore = 0, questionAttempted = 0, current;
+    int currentScore = 0, questionAttempted = 0, current = 0, previous;
 
     private ImageView backward, forward, help;
-    int chance=1;
+    int chance = 1;
+    boolean answered;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_english_language);
-
 
 
         questionTV = findViewById(R.id.idTVQuestions);
@@ -41,7 +43,6 @@ public class EnglishLanguage extends AppCompatActivity {
         help = findViewById(R.id.help);
 
 
-
         questionModelArrayList = new ArrayList<>();
         random = new Random();
         getQuizQuestion(questionModelArrayList);
@@ -49,11 +50,10 @@ public class EnglishLanguage extends AppCompatActivity {
         current = random.nextInt(questionModelArrayList.size());
         setDataToView(current);
 
-        passedQuestions=new ArrayList<QuestionModel>();
+        passedQuestions = new ArrayList<QuestionModel>();
 //        passedQuestions=questionModelArrayList;
 
-
-        previousQuestions=new ArrayList<>();
+        previousQuestions = new ArrayList<>();
 
 
         QuestionAdapter questionAdapter = new QuestionAdapter(this, questionModelArrayList);
@@ -61,32 +61,50 @@ public class EnglishLanguage extends AppCompatActivity {
         listView.setVisibility(View.INVISIBLE);
         listView.setAdapter(questionAdapter);
 
-        backward=(ImageView)findViewById(R.id.backward);
+        backward = (ImageView) findViewById(R.id.backward);
         backward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (questionAttempted>=1){
-                    current=previousQuestions.size()-1;
-                    questionAttempted=questionAttempted-1;
-                    setDataToView(current);
-                }else {
-                    Toast.makeText(EnglishLanguage.this, "No Passed Questions", Toast.LENGTH_SHORT).show();
+                if (questionAttempted >= 1 && questionAttempted <= 10) {
+                    questionAttempted = questionAttempted - 1;
+                    previous = random.nextInt(passedQuestions.size());
+//                    questionNumber.setText("Question Attempted:" + questionAttempted + "/10");
+                    questionTV.setText(passedQuestions.get(previous).getQuestion());
+
+                } else {
+                    Toast.makeText(EnglishLanguage.this, "No passed Questions" +
+                            "", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
+        forward = findViewById(R.id.forward);
+        forward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (questionAttempted > 1 || optionBtnTrue.isPressed() && optionBtnFalse.isPressed()) {
+                    getQuizQuestion(questionModelArrayList);
+                    current = random.nextInt(passedQuestions.size());
+                    questionNumber.setText("Question Attempted:" + questionAttempted + "/10");
+                    questionTV.setText(passedQuestions.get(current).getQuestion());
+                } else {
+                    Toast.makeText(EnglishLanguage.this, "Please check your answers", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //helping answer
-                if(chance<=1){
+                if (chance <= 1) {
                     chance++;
                     String helpAnswer;
                     helpAnswer = questionModelArrayList.get(current).getAnswer().trim().toString();
-                    Intent intent=new Intent(EnglishLanguage.this,Help.class);
-                    intent.putExtra("help",helpAnswer);
+                    Intent intent = new Intent(EnglishLanguage.this, Help.class);
+                    intent.putExtra("help", helpAnswer);
                     startActivity(intent);
-                }else {
+                } else {
                     Toast.makeText(EnglishLanguage.this, "No More chance", Toast.LENGTH_SHORT).show();
 
                 }
@@ -99,9 +117,6 @@ public class EnglishLanguage extends AppCompatActivity {
                 if (questionModelArrayList.get(current).getAnswer().trim().toLowerCase().equals(optionBtnTrue.getText().toString().trim().toLowerCase())) {
                     currentScore++;
                 }
-//                if (questionModelArrayList.get(current)!=passedQuestions.get(current)){
-//                    passedQuestions.add(questionModelArrayList.get(current));
-//                }
                 passedQuestions.add(questionModelArrayList.get(current));
                 previousQuestions.add(questionModelArrayList.get(current));
                 questionAttempted++;
@@ -116,9 +131,6 @@ public class EnglishLanguage extends AppCompatActivity {
                 if (questionModelArrayList.get(current).getAnswer().trim().toLowerCase().equals(optionBtnFalse.getText().toString().trim().toLowerCase())) {
                     currentScore++;
                 }
-//                if (questionModelArrayList.get(current)!=passedQuestions.get(current)){
-//                    passedQuestions.add(questionModelArrayList.get(current));
-//                }
                 passedQuestions.add(questionModelArrayList.get(current));
                 previousQuestions.add(questionModelArrayList.get(current));
                 questionAttempted++;
@@ -127,16 +139,14 @@ public class EnglishLanguage extends AppCompatActivity {
             }
         });
     }
+
     private void setDataToView(int current) {
         questionNumber.setText("Question Attempted:" + questionAttempted + "/10");
         TextView scores = (TextView) findViewById(R.id.scores);
         scores.setVisibility(View.INVISIBLE);
         //displaying scores
         scores.setText("" + currentScore);
-//        String correctAnswer = questionModelArrayList.get(current).getAnswer();
-//        TextView answer = findViewById(R.id.answer);
-//        answer.setText(correctAnswer);
-//        answer.setText(getCorrectAnswers().trim().toString());
+
         if (questionAttempted == 10) {
             Intent intent = new Intent(EnglishLanguage.this, Result.class);
             intent.putParcelableArrayListExtra("Pairs", passedQuestions);

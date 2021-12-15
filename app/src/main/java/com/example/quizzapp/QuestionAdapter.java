@@ -20,11 +20,10 @@ public class QuestionAdapter extends BaseAdapter {
     int mResource;
 
     public QuestionAdapter(@NonNull Context context, @NonNull ArrayList<QuestionModel> objects) {
-        this.mContext=context;
-        this.questionModelArrayList=objects;
+        this.mContext = context;
+        this.questionModelArrayList = objects;
 
     }
-
 
 
     @Override
@@ -42,28 +41,29 @@ public class QuestionAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    public View getView(int position,View convertView,ViewGroup parent){
 
-        if (convertView ==null){
-            convertView=LayoutInflater.from(mContext).inflate(R.layout.row_item,parent,false);
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        if (convertView == null) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.row_item, parent, false);
         }
-        QuestionModel questionModel=(QuestionModel) getItem(position);
+        QuestionModel questionModel = (QuestionModel) getItem(position);
 
-        TextView textView=(TextView) convertView.findViewById(R.id.questionTV);
+        TextView textView = (TextView) convertView.findViewById(R.id.questionTV);
 //        TextView option1=(TextView)convertView.findViewById(R.id.option1);
 //        TextView option2=(TextView)convertView.findViewById(R.id.option2);
-        TextView textView1=(TextView) convertView.findViewById(R.id.answerTV);
+        TextView textView1 = (TextView) convertView.findViewById(R.id.answerTV);
 
         textView.setText(questionModel.getQuestion());
 //        option1.setText(questionModel.getOption1());
 //        option2.setText(questionModel.getOption2());
         textView1.setText(questionModel.getAnswer());
-        if (textView1.getText().toString().equals("Yes")){
+        if (textView1.getText().toString().equals("Yes")) {
             textView.setBackgroundColor(convertView.getResources().getColor(R.color.blue));
             textView.setTextColor(Color.WHITE);
             textView1.setBackgroundColor(convertView.getResources().getColor(android.R.color.holo_green_light));
             textView1.setTextColor(Color.WHITE);
-        }else {
+        } else {
             textView.setBackgroundColor(convertView.getResources().getColor(R.color.blue));
             textView.setTextColor(Color.WHITE);
             textView1.setBackgroundColor(convertView.getResources().getColor(android.R.color.holo_red_dark));

@@ -1,7 +1,5 @@
 package com.example.quizzapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -26,9 +26,9 @@ public class Result extends AppCompatActivity {
 
         ratingBar = findViewById(R.id.rating_bar);
 
-        questionModelArrayList=this.getIntent().getParcelableArrayListExtra("Pairs");
-        ListView listView=findViewById(R.id.listView);
-        QuestionAdapter questionAdapter=new QuestionAdapter(Result.this,questionModelArrayList);
+        questionModelArrayList = this.getIntent().getParcelableArrayListExtra("Pairs");
+        ListView listView = findViewById(R.id.listView);
+        QuestionAdapter questionAdapter = new QuestionAdapter(Result.this, questionModelArrayList);
         listView.setAdapter(questionAdapter);
 //        listView.setVisibility(View.INVISIBLE);
 
@@ -74,8 +74,8 @@ public class Result extends AppCompatActivity {
         rightAnswers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Result.this,YourAnswers.class);
-                intent.putParcelableArrayListExtra("Pairs",questionModelArrayList);
+                Intent intent = new Intent(Result.this, YourAnswers.class);
+                intent.putParcelableArrayListExtra("Pairs", questionModelArrayList);
                 startActivity(intent);
             }
         });
@@ -94,8 +94,12 @@ public class Result extends AppCompatActivity {
         retryQuizz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Result.this, YourAnswers.class);
-                intent.putExtra("Scores",scores);
+//                Intent intent = new Intent(Result.this, YourAnswers.class);
+//                intent.putExtra("Scores",scores);
+//                startActivity(intent);
+//                finish();
+//
+                Intent intent = new Intent(Result.this, Subjects.class);
                 startActivity(intent);
                 finish();
             }

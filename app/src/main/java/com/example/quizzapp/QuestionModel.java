@@ -3,8 +3,6 @@ package com.example.quizzapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 public class QuestionModel implements Parcelable {
 
     private String question;
